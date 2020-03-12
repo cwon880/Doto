@@ -1,12 +1,15 @@
+require('dotenv').config();
 const express = require('express')
 const cors = require('cors')
 const app = express()
 const apiPort = process.env.PORT || 3000
-require('dotenv').config();
-
+const { DB_CONN, DB_USER, DB_PW } = process.env;
 // Mongoose connection
 const mongoose = require('mongoose');
-mongoose.connect(process.env.mongodb_uri, { useNewUrlParser: true });
+mongoose.connect(
+    DB_CONN, 
+    { auth : { user: DB_USER, password: DB_PW},
+     useNewUrlParser: true }).then(() => console.log('success concect to db')).catch(console.error);
 const db = mongoose.connection;
 
 // Checking for DB connection
