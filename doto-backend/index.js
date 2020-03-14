@@ -3,18 +3,18 @@ const cors = require('cors')
 const app = express()
 const apiPort = process.env.PORT || 3000
 require('dotenv').config();
-
-
-const environment = app.get('env')
-console.log(environment)
-if (environment === 'development'){
-    // Mongoose connection
-    const mongoose = require('mongoose');
-    mongoose.connect(process.env.mongodb_uri, { useNewUrlParser: true });
-    const db = mongoose.connection;
-} 
-
-
+const connectionString = process.env.AZURE_CONN || process.env.mongodb_uri;
+// Mongoose connection
+const mongoose = require('mongoose');
+const connObj = { useNewUrlParser: true }
+if(process.env.AZURE_USER && process.env.AZURE_PW){
+    connObj.auth = {
+        user : process.env.AZURE_USER,
+        password: process.env.AZURE_PW
+    };
+}
+mongoose.connect(connectionString, connObj);
+const db = mongoose.connection;
 
 // Checking for DB connection
 db.once('open', function(){
