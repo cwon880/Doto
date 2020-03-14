@@ -4,10 +4,17 @@ const app = express()
 const apiPort = process.env.PORT || 3000
 require('dotenv').config();
 
-// Mongoose connection
-const mongoose = require('mongoose');
-mongoose.connect(process.env.mongodb_uri, { useNewUrlParser: true });
-const db = mongoose.connection;
+
+const environment = app.get('env')
+console.log(environment)
+if (environment === 'development'){
+    // Mongoose connection
+    const mongoose = require('mongoose');
+    mongoose.connect(process.env.mongodb_uri, { useNewUrlParser: true });
+    const db = mongoose.connection;
+} 
+
+
 
 // Checking for DB connection
 db.once('open', function(){
