@@ -16,6 +16,7 @@ process.env.TEST_SUITE = 'task-test';
 describe('Task Model Tests', () => {
 
     before(async () => {
+        console.log(app.get('env'))
         await mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.TEST_SUITE}`, { useNewUrlParser: true}, (err) => {
             if (err) {
                 console.error(err);
